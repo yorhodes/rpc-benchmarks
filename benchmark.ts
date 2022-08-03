@@ -1,11 +1,12 @@
 import { ethers } from 'ethers';
-// import { plot } from 'asciichart';
+
 import rpcs from './providers.json';
+import config from './config.json';
 
-const RATE_LIMIT_MS = 1000;
-const PARALLELISM = 20;
+const RATE_LIMIT_MS = config.ethereum.rate;
+const PARALLELISM = config.ethereum.parallelism;
 
-export async function compare(providers: ethers.providers.Provider[], quorum = providers.length / 2) {
+export async function compare(providers: ethers.providers.Provider[], quorum = config.ethereum.quorum) {
     // check serially to avoid contention issues
     let base = [];
     providers.concat()
@@ -16,12 +17,6 @@ export async function compare(providers: ethers.providers.Provider[], quorum = p
     const fallbackProvider = new ethers.providers.FallbackProvider(providers, quorum);
     const fallback = await benchmark(fallbackProvider);
 
-    // return plot(base.flatMap((s) => s).concat(fallback), {
-    //     height: 10,
-    //     offset:  3,
-    // })
-
-    // return plot(base.concat(fallback));
     return { base, fallback }
 }
 

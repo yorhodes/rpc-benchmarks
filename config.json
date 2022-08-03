@@ -1,0 +1,7 @@
+{
+    "ethereum": {
+        "quorum": 1,
+        "parallelism": 20,
+        "rate": 1000
+    }
+}
